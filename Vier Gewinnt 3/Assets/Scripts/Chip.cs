@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class Chip : MonoBehaviour
 {
+
+	public GameObject gameManager;
+	public GameManager gameManagerClass;
+	public Player playerColor;
     // Start is called before the first frame update
     void Start()
     {
+    	gameManager = GameObject.Find("GameManager");
+    	gameManagerClass = gameManager.GetComponent<GameManager>();
+    	playerColor = gameManagerClass.activePlayer;
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-}   
+    	this.GetComponent<ColorObject>().SetColor(playerColor, false);   
+    } 
+}
