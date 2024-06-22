@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour {
     public void AddStone(int column) 
     {
         int row = 5;
-
+        PlayerSwitch();
         while (boardData[row, column] != Player.NONE) {
             row--;
             if (row == 0){
@@ -39,15 +39,15 @@ public class GameManager : MonoBehaviour {
             }
         }
         
-        boardData[row,column] = Player.One;
+        boardData[row,column] = activePlayer;
         Instantiate(exampleChip,BoardPositions.GetWorldPosition(row,column),Quaternion.identity);
-        PlayerSwitch();
+        
         WinCondition(activePlayer);
         Debug.Log($"Add Stone {activePlayer} to column {column}.");
     }
 
     public Player PlayerSwitch(){
-        if (playercount%2 == 0){
+        if (playercount % 2 == 0){
             activePlayer = Player.One;
         }
         else {
