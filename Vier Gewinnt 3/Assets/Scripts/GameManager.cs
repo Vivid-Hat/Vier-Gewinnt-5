@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour {
     public GameObject exampleChip;
     public GameObject winpanel;
     public Text win;
+    public GameObject playerSelect1;
+    public GameObject playerSelect2;
+    public GameObject drawpanel;
 
     int playercount = 2;
 
@@ -15,6 +18,7 @@ public class GameManager : MonoBehaviour {
     public void Awake() {
         if (exampleChip == null) {
             Debug.LogError("You must set 'exampleChip to a valid game prefab.'");
+
         }
     }
 
@@ -28,7 +32,67 @@ public class GameManager : MonoBehaviour {
         { Player.NONE, Player.NONE, Player.NONE, Player.NONE, Player.NONE, Player.NONE, Player.NONE }
     };
 
-    public void AddStone(int column) 
+    public void AddStone(int column) {
+    int row = 5;
+
+    if (playercount == 44){
+            drawpanel.SetActive(true);
+        }
+
+    // Find the first empty row in the given column
+    while (boardData[row, column] != Player.NONE) {
+        row--;
+        //if (row == 0){
+            //break;
+        //}
+    }
+
+    if (row >= 0) {
+
+        PlayerSwitch();
+        // Update the board data with the active player's move
+        boardData[row, column] = activePlayer;
+
+        // Calculate the destination position for the chip
+        Vector3 destination = BoardPositions.GetWorldPosition(row, column);
+
+        // Instantiate the chip above the board (e.g., at row 6)
+        GameObject chip = Instantiate(exampleChip, BoardPositions.GetWorldPositionAboveBoard(column), Quaternion.identity);
+
+        // Start the chip drop animation coroutine
+        StartCoroutine(ChipDropAnimation(chip.transform, destination));
+        
+        // Check for win condition
+        WinCondition(activePlayer);
+
+        Debug.Log($"Add Stone {activePlayer} to column {column}.");
+    }
+
+    else {
+        Debug.Log("Column is full");
+    }
+    
+}
+    private IEnumerator ChipDropAnimation(Transform chipTransform, Vector3 destination){
+    Vector3 startPosition = chipTransform.position;
+    Debug.Log($"Animating from {startPosition} to {destination}");
+
+    float elapsed = 0f;
+    float duration = 0.5f; // Adjust the duration for a smoother or quicker drop
+
+    while (elapsed < duration){
+        float t = elapsed / duration;
+        chipTransform.position = Vector3.Lerp(startPosition, destination, t);
+        Debug.Log($"Current Position: {chipTransform.position} at time {elapsed}");
+        elapsed += Time.deltaTime;
+        yield return null;
+    }
+
+    chipTransform.position = destination;
+    Debug.Log($"Final Position: {chipTransform.position}");
+}
+
+    /*public void AddStone(int column) 
     {
         int row = 5;
         PlayerSwitch();
@@ -40,22 +104,44 @@ public class GameManager : MonoBehaviour {
         }
         
         boardData[row,column] = activePlayer;
-        Instantiate(exampleChip,BoardPositions.GetWorldPosition(row,column),Quaternion.identity);
+        Instantiate(exampleChip,BoardPositions.GetWorldPosition(row,column));
         
         WinCondition(activePlayer);
         Debug.Log($"Add Stone {activePlayer} to column {column}.");
-    }
+    }*/
+    /*private IEnumerator ChipAnimation(Vector3 column)
+    {
+        Vector3 StartPosition = transform.position;
+        
+        float elapsed = 0f;
+        float duration = 0.125f;
+
+        while (elapsed < duration)
+        {
+            float t = elapsed / duration;
+            transform.position = Vector3.Lerp(StartPosition, column, t);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = column;
+    }*/
 
     public Player PlayerSwitch(){
         if (playercount % 2 == 0){
             activePlayer = Player.One;
+            playerSelect1.SetActive(false);
+            playerSelect2.SetActive(true);
         }
         else {
             activePlayer = Player.Two;
+            playerSelect2.SetActive(false);
+            playerSelect1.SetActive(true);
         }
         playercount ++;
         return activePlayer;
     }
+
 
     bool WinCondition(Player countPlayer){
 
