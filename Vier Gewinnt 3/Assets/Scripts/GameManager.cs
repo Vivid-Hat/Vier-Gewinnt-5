@@ -1,23 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
-    public GameObject exampleChip;
+    public GameObject exampleChip;              //Referenziert public Variablen
     public GameObject winpanel;
     public Text win;
     public GameObject playerSelect1;
     public GameObject playerSelect2;
     public GameObject drawpanel;
 
-    int playercount = 2;
+    int playercount = 2;                        //Startet die playercount Variable bei 2
 
-    public Player activePlayer = Player.One;
+    public Player activePlayer = Player.One;    //Setzt den erst aktiven Spieler auf Spieler 1
 
-    public void Awake() {
+    public void Awake() {                        
         if (exampleChip == null) {
-            Debug.LogError("You must set 'exampleChip to a valid game prefab.'");
+            Debug.LogError("You must set 'exampleChip to a valid game prefab.'"); //Dient nur zum Debug, falls das chip prefab noch nicht zugewiesen wurde
 
         }
     }
@@ -32,126 +33,73 @@ public class GameManager : MonoBehaviour {
         { Player.NONE, Player.NONE, Player.NONE, Player.NONE, Player.NONE, Player.NONE, Player.NONE }
     };
 
-    public void AddStone(int column) {
-    int row = 5;
+    public void AddStone(int column) {       //AddStone Funktion
+    int row = 5;                             //Es gibt 6 Zeilen pro Spalte. Jede Spalte startet bei der Zeile 5(unten) --> 0(oben). Variable wird initialisiert
 
-    if (playercount == 44){
-            drawpanel.SetActive(true);
+        if (playercount == 44){              //Zuvor definierter playercount ist wichtig für Spielerwechsel, aber kann auch für game state draw detection genutzt werden
+                                             //42 Felder die besetzt werden können. counter startet bei 2, also 44 bis alle Felder belegt sind
+            drawpanel.SetActive(true);       //Wenn das passiert ist, aktiviere das draw panel 
         }
 
-    // Find the first empty row in the given column
-    while (boardData[row, column] != Player.NONE) {
-        row--;
-        //if (row == 0){
-            //break;
-        //}
+    while (boardData[row, column] != Player.NONE) {         //Findet die erste Zeile die noch nicht besetzt ist
+        row--;                                              //Setzt die Zeile eins hoch wenn besetzt
     }
 
-    if (row >= 0) {
+    if (row >= 0) {                                         //Stellt sicher, dass die Spalte noch nicht voll ist
 
-        PlayerSwitch();
-        // Update the board data with the active player's move
-        boardData[row, column] = activePlayer;
-
-        // Calculate the destination position for the chip
-        Vector3 destination = BoardPositions.GetWorldPosition(row, column);
-
-        // Instantiate the chip above the board (e.g., at row 6)
-        GameObject chip = Instantiate(exampleChip, BoardPositions.GetWorldPositionAboveBoard(column), Quaternion.identity);
-
-        // Start the chip drop animation coroutine
-        StartCoroutine(ChipDropAnimation(chip.transform, destination));
-        
-        // Check for win condition
-        WinCondition(activePlayer);
-
-        Debug.Log($"Add Stone {activePlayer} to column {column}.");
+        PlayerSwitch();                                     //Führt die Funktion PlayerSwitch aus und ändert damit den Spieler
+        boardData[row, column] = activePlayer;              //Updated boardData über den Zug vom aktiven Spieler
+        Vector3 destination = BoardPositions.GetWorldPosition(row, column);                    //Berechnet die Zielposition vom Chip
+        GameObject chip = Instantiate(exampleChip, BoardPositions.GetWorldPositionAboveBoard(column), Quaternion.identity);     //Setzt den Chip über dem Board ein. Zeile 6
+        StartCoroutine(ChipDropAnimation(chip.transform, destination));                        //Startet die Animation für den Fall des Chips
+        WinCondition(activePlayer);                                                            //Checkt ob durch den Zug der aktive Spieler gewonnen hat
     }
 
     else {
-        Debug.Log("Column is full");
+        Debug.Log("Column is full");                        //Wenn die row kleiner als 0 --> Spalte ist voll
     }
     
 }
-    private IEnumerator ChipDropAnimation(Transform chipTransform, Vector3 destination){
-    Vector3 startPosition = chipTransform.position;
-    Debug.Log($"Animating from {startPosition} to {destination}");
-
-    float elapsed = 0f;
-    float duration = 0.5f; // Adjust the duration for a smoother or quicker drop
-
-    while (elapsed < duration){
-        float t = elapsed / duration;
-        chipTransform.position = Vector3.Lerp(startPosition, destination, t);
-        Debug.Log($"Current Position: {chipTransform.position} at time {elapsed}");
-        elapsed += Time.deltaTime;
-        yield return null;
+    public Player PlayerSwitch(){                           //Funktion für Spielerwechsel
+        if (playercount % 2 == 0){                          //Wenn der playercount durch 2 geteilt wird und keinen Rest hat
+            activePlayer = Player.One;                      //setze den aktiven Spieler auf Spieler 1
+            playerSelect1.SetActive(false);                 //Deaktiviert die UI für Spieler 1
+            playerSelect2.SetActive(true);                  //Aktiviert die UI für Spieler 2
+        }
+        else{                                              //Wenn das nicht der Fall ist {...}
+            activePlayer = Player.Two;                      //Aktiver Spieler ist Spieler 2
+            playerSelect2.SetActive(false);                 //Deaktiviert die UI für Spieler 2
+            playerSelect1.SetActive(true);                  //Aktiviert die UI für Spieler 1 
+        }
+        playercount++;                                     //Erhöht den playercount um 1
+        return activePlayer;                                //gibt den aktiven Spiler zurück
     }
 
-    chipTransform.position = destination;
-    Debug.Log($"Final Position: {chipTransform.position}");
+    private IEnumerator ChipDropAnimation(Transform chipTransform, Vector3 destination){           //Animation
+    Vector3 startPosition = chipTransform.position;                                                //Speichert die Startposition vom Chip
+
+    float elapsed = 0f;                                                                            //Verstrichene Zeit startet bei 0
+    float duration = 0.5f;                                                                         //Dauer der Animtion
+
+    while (elapsed < duration){                                                                    //Solange die Laufzeit kleiner ist als die Dauer der Animation mache {...}
+        float t = elapsed / duration;                                                              //Definiert t als Zeitvariable
+        chipTransform.position = Vector3.Lerp(startPosition, destination, t);                      //Berecchnet die Position des chips auf dem Weg von Startposition zu Zielposition
+        elapsed += Time.deltaTime;                                                                 //Erhöht verstrichene Zeit pro frame
+        yield return null;                                                                         //Warten bis nächster Frame
+    }
+        chipTransform.position = destination;                                                      //Die Endposition des Chips auf Zielposition setzen
 }
-
-    /*public void AddStone(int column) 
-    {
-        int row = 5;
-        PlayerSwitch();
-        while (boardData[row, column] != Player.NONE) {
-            row--;
-            if (row == 0){
-                break;
-            }
-        }
-        
-        boardData[row,column] = activePlayer;
-        Instantiate(exampleChip,BoardPositions.GetWorldPosition(row,column));
-        
-        WinCondition(activePlayer);
-        Debug.Log($"Add Stone {activePlayer} to column {column}.");
-    }*/
-    /*private IEnumerator ChipAnimation(Vector3 column)
-    {
-        Vector3 StartPosition = transform.position;
-        
-        float elapsed = 0f;
-        float duration = 0.125f;
-
-        while (elapsed < duration)
-        {
-            float t = elapsed / duration;
-            transform.position = Vector3.Lerp(StartPosition, column, t);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        transform.position = column;
-    }*/
-
-    public Player PlayerSwitch(){
-        if (playercount % 2 == 0){
-            activePlayer = Player.One;
-            playerSelect1.SetActive(false);
-            playerSelect2.SetActive(true);
-        }
-        else {
-            activePlayer = Player.Two;
-            playerSelect2.SetActive(false);
-            playerSelect1.SetActive(true);
-        }
-        playercount ++;
-        return activePlayer;
-    }
 
 
     bool WinCondition(Player countPlayer){
 
-    //horizontal
+    //Horizontal
     for (int x = 0; x < boardData.GetLength(0) - 3; x++){
         for (int y = 0; y < boardData.GetLength(1); y++){
             if (boardData[x, y] == countPlayer && boardData[x + 1, y] == countPlayer && boardData[x + 2, y] == countPlayer && boardData[x + 3, y] == countPlayer){
                 if (countPlayer == Player.One){
                     win.text = "Spieler 1 hat gewonnen!";
-                }
+                    }
                 if (countPlayer == Player.Two){
                     win.text = "Spieler 2 hat gewonnen!";
                 }
@@ -160,7 +108,7 @@ public class GameManager : MonoBehaviour {
             }
         }
     }
-    //vertical
+    //Vertikal
     for (int x = 0; x < boardData.GetLength(0); x++){
         for (int y = 0; y < boardData.GetLength(1) - 3; y++){
             if (boardData[x, y] == countPlayer && boardData[x, y + 1] == countPlayer && boardData[x, y + 2] == countPlayer && boardData[x, y + 3] == countPlayer){
@@ -175,7 +123,7 @@ public class GameManager : MonoBehaviour {
             }
         }
     }
-    //diagonal 
+    //Diagonal von unten nach oben
     for (int x = 0; x < boardData.GetLength(0) - 3; x++){
         for (int y = 0; y < boardData.GetLength(1) - 3; y++){
             if(boardData[x, y] == countPlayer && boardData[x + 1, y + 1] == countPlayer && boardData[x + 2, y + 2] == countPlayer && boardData[x + 3, y + 3] == countPlayer){
@@ -190,7 +138,7 @@ public class GameManager : MonoBehaviour {
             }
         }       
     }
-    //diagonal von oben nach unten
+    //Diagonal von oben nach unten
     for (int x = 0; x < boardData.GetLength(0) - 3; x++){
         for (int y = 0; y < boardData.GetLength(1) - 3; y++){
             if (boardData [x, y + 3] == countPlayer && boardData[x + 1, y + 2] == countPlayer && boardData[x + 2, y + 1] == countPlayer && boardData[x + 3, y] == countPlayer){

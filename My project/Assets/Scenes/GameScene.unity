@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -739,7 +739,6 @@ GameObject:
   - component: {fileID: 161515337}
   - component: {fileID: 161515336}
   - component: {fileID: 161515335}
-  - component: {fileID: 161515338}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -810,19 +809,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 161515336}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 161515338}
-        m_TargetAssemblyTypeName: Restart, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &161515336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -861,18 +848,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 161515333}
   m_CullTransparentMesh: 0
---- !u!114 &161515338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 161515333}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 129005f2a56b5470f8190c8130618a30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &163724278
 GameObject:
   m_ObjectHideFlags: 0
@@ -1557,7 +1532,6 @@ GameObject:
   - component: {fileID: 676706492}
   - component: {fileID: 676706491}
   - component: {fileID: 676706490}
-  - component: {fileID: 676706493}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -1628,19 +1602,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 676706491}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 676706493}
-        m_TargetAssemblyTypeName: Restart, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &676706491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1679,18 +1641,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 676706488}
   m_CullTransparentMesh: 0
---- !u!114 &676706493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 676706488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 129005f2a56b5470f8190c8130618a30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &682376973
 GameObject:
   m_ObjectHideFlags: 0
@@ -1839,7 +1789,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &703863986
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2590,7 +2540,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 950781004}
-  - component: {fileID: 950781005}
   m_Layer: 0
   m_Name: WinPanel
   m_TagString: Untagged
@@ -2619,102 +2568,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!82 &950781005
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 950781003}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 14dcb4e16e915fb4e8722a4382416cd2, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &959453068
 GameObject:
   m_ObjectHideFlags: 0
@@ -4031,14 +3884,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da2261f663e156e468201db068b0fc8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  exampleChip: {fileID: 1820168822466199623, guid: 2f426cac11618384c99a9dbbf05693a9, type: 3}
-  winpanel: {fileID: 950781003}
-  winpanelColor: {fileID: 0}
-  win: {fileID: 1907552728}
-  playerSelect1: {fileID: 959453068}
-  playerSelect2: {fileID: 703863985}
-  drawpanel: {fileID: 1089575184}
-  activePlayer: 1
+  exampleChip: {fileID: 1820168822466199623, guid: 2f426cac11618384c99a9dbbf05693a9,
+    type: 3}
 --- !u!4 &2061251843
 Transform:
   m_ObjectHideFlags: 0
